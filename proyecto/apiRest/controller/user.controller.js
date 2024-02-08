@@ -42,10 +42,10 @@ const authenticateUser = async (req, res, next) => {
                 email: result[0].email,
                 photo: result[0].photo
             };
-            res.send(userData);
+            res.json(userData);
             console.log('Login ok');
         } else {
-            res.send('No coincide el correo y la contraseña. Por favor, inténtelo de nuevo.')
+            res.status(401).json({ error: 'No coincide el correo y la contraseña. Por favor, inténtelo de nuevo.' });
         }
     
     } catch(err){
