@@ -13,7 +13,8 @@ const getBooks = async (req, res, next) => {
     // si existe id_user, buscar con id_user 
     if (req.query.id_user) {
         params.push(req.query.id_user);
-        sql = 'SELECT * ' +
+        // sale foto de user en dato de book en angular, asi que hacer alias para userPhoto
+        sql = 'SELECT apiBooks.book.*, apiBooks.user.photo AS userPhoto ' +
         'FROM apiBooks.book ' +
         'JOIN apiBooks.user ON apiBooks.user.id_user = apiBooks.book.id_user ' +
         'WHERE apiBooks.book.id_user = ?';
@@ -21,7 +22,9 @@ const getBooks = async (req, res, next) => {
         // si existe id_book tambien, buscar con id_user y id_book
         if (req.query.id_book) {
             params.push(req.query.id_book);
-            sql = 'SELECT * ' +
+            // sql = 'SELECT * ' +
+            sql = 'SELECT apiBooks.book.*, apiBooks.user.photo AS userPhoto ' +
+
             'FROM apiBooks.book ' +
             'JOIN apiBooks.user ON apiBooks.user.id_user = apiBooks.book.id_user ' +
             'WHERE apiBooks.book.id_user = ? AND apiBooks.book.id_book = ?';

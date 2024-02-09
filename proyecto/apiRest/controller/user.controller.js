@@ -55,9 +55,56 @@ const authenticateUser = async (req, res, next) => {
     }
 
 
+const getUser = async (req, res, next) =>{
+    try {
+     let sql = 'SELECT * From apiBooks.user WHERE apiBooks.id_user = ?';
+        console.log(sql);
+
+        let [result] = await pool.query(sql);
+            res.send(result);
+    } catch {
+        console.log(err);
+        next(err);
+    }
+
+}
+
+const editUser = async (req, res, next) => {
+    try {
+        console.log(req.body);
+        let params = [
+                    req.body.name,
+                    req.body.last_name,
+                    req.body.email,
+                    req.body.photo,
+                    req.body.password,
+                    req.body.id_user,
+                    ];
+
+        let sql = 'UPDATE apiBooks.user SET name = COALESCE(?, name), ' +
+                'last_name = COALESCE(?, last_name), ' +
+                'email = COALESCE(?, email), ' +
+                'photo = COALESCE(?, photo), ' +
+                'password = COALESCE(?, password) ' +
+                'WHERE id_user = ?';
+            
+
+        console.log(sql);
+        let [result] = await pool.query(sql, params);
+        res.send(result);
+            
+    } catch(err) {
+        console.log(err);
+        next(err);
+    }
+} 
+
+
 
 
 module.exports = {
     registerUser,
-    authenticateUser
+    authenticateUser,
+    getUser,
+    editUser
 };
