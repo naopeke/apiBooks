@@ -2,14 +2,15 @@ const { pool } = require('../database');
 
 const registerUser = async (req, res, next) => {
     try {
-        let sql = 'INSERT INTO user (name, last_name, email, photo, password) ' +
-                'VALUES ("' + req.body.nombre + '", "'+
-                req.body.apellido + ' ", "' +
-                req.body.email + ' ", "' +
-                req.body.url + ' ", "' +
-                req.body.password1 + '")';
-        console.log(sql);
-        let [result] = await pool.query(sql);   
+        let sql = 'INSERT INTO user (name, last_name, email, photo, password) VALUES (?, ?, ?, ?, ?)';
+        let params = [
+            req.body.nombre,
+            req.body.apellido,
+            req.body.email,
+            req.body.url,
+            req.body.password1
+        ]
+        let [result] = await pool.query(sql, params);   
         console.log(result);
 
         if(result.insertId){
@@ -42,11 +43,9 @@ const authenticateUser = async (req, res, next) => {
                 email: result[0].email,
                 photo: result[0].photo
             };
-            res.json(userData);
+            res.send(userData);
             console.log('Login ok');
-        } else {
-            res.status(401).json({ error: 'No coincide el correo y la contraseña. Por favor, inténtelo de nuevo.' });
-        }
+        } 
     
     } catch(err){
             console.log(err);
