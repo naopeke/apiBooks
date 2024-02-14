@@ -2,7 +2,8 @@ const { pool } = require('../database');
 
 const registerUser = async (req, res, next) => {
     try {
-        let sql = 'INSERT INTO user (name, last_name, email, photo, password) VALUES (?, ?, ?, ?, ?)';
+        let sql = 'INSERT INTO user (name, last_name, email, photo, password) '+
+                  'VALUES (?, ?, ?, ?, ?)';
         let params = [
             req.body.nombre,
             req.body.apellido,
